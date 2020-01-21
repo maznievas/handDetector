@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "807220897156",
+    "firebase_url": "https://handdetection-41626.firebaseio.com",
+    "project_id": "handdetection-41626",
+    "storage_bucket": "handdetection-41626.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807220897156:android:415f78514568d0f26629d1",
+        "android_client_info": {
+          "package_name": "com.example.photoscanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807220897156-crqo62vsme58uu34hubdsvlm1h62bmg4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6l8GddTRYNJrf4ZkBhhPeR1UMxWrSfsM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "807220897156-crqo62vsme58uu34hubdsvlm1h62bmg4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

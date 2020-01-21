@@ -1,0 +1,4 @@
+package com.example.photoscanner
+
+val CAMERA_PERMISSION_REQUEST_CODE = 666
+val REMOTE_HANDS_DETECTION_MODEL = "hand_2020121221841"
