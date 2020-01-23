@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), ImageDetectedListener {
                     FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder(remoteModel)
 
                 // Evaluate your model in the Firebase console to determine an appropriate threshold.
-                val options = optionsBuilder.setConfidenceThreshold(0.7f).build()
+                val options = optionsBuilder.setConfidenceThreshold(0.75f).build()
                 labeler = FirebaseVision.getInstance().getOnDeviceAutoMLImageLabeler(options)
 
                 tryToStartCamera()
@@ -89,9 +89,18 @@ class MainActivity : AppCompatActivity(), ImageDetectedListener {
             .addOnSuccessListener { labels ->
                 // Task completed successfully
                 // ...
-                for(label in labels){
-                    Log.d(TAG, "label.confidence " + label.confidence +
-                    " label.text = " + label.text);
+                Log.d("test", "image processed")
+                for (label in labels) {
+                    when (label.text) {
+                        "other" -> Log.d(
+                            TAG, "label.confidence " + label.confidence +
+                                    " label.text = " + label.text
+                        )
+                        "static_hand" -> Log.e(
+                            TAG, "label.confidence " + label.confidence +
+                                    " label.text = " + label.text
+                        )
+                    }
                 }
             }
             .addOnFailureListener { e ->

@@ -30,6 +30,7 @@ class HandAnalyzer(var imageDetectedListener: ImageDetectedListener) : ImageAnal
     override fun analyze(imageProxy: ImageProxy?, degrees: Int) {
         val mediaImage = imageProxy?.image
         val imageRotation = degreesToFirebaseRotation(degrees)
+        Log.d(TAG, "imageRotation: " + imageRotation)
         if (mediaImage != null) {
             val image = FirebaseVisionImage.fromMediaImage(mediaImage, imageRotation)
             // Pass image to an ML Kit Vision API
