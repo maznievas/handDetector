@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "807220897156",
-    "firebase_url": "https://handdetection-41626.firebaseio.com",
-    "project_id": "handdetection-41626",
-    "storage_bucket": "handdetection-41626.appspot.com"
+    "project_number": "251946952721",
+    "firebase_url": "https://handdetector-f5386.firebaseio.com",
+    "project_id": "handdetector-f5386",
+    "storage_bucket": "handdetector-f5386.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:807220897156:android:415f78514568d0f26629d1",
+        "mobilesdk_app_id": "1:251946952721:android:d264a6ab48606da84469b0",
         "android_client_info": {
           "package_name": "com.example.photoscanner"
         }
       },
       "oauth_client": [
         {
-          "client_id": "807220897156-crqo62vsme58uu34hubdsvlm1h62bmg4.apps.googleusercontent.com",
+          "client_id": "251946952721-q99ij5idkl6472lsad0vceak0c37lvdc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC6l8GddTRYNJrf4ZkBhhPeR1UMxWrSfsM"
+          "current_key": "AIzaSyB9536QFmRuO_UwDnQmijq5D0P5StotaVo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "807220897156-crqo62vsme58uu34hubdsvlm1h62bmg4.apps.googleusercontent.com",
+              "client_id": "251946952721-q99ij5idkl6472lsad0vceak0c37lvdc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions
 import com.google.firebase.ml.common.modeldownload.FirebaseModelManager
 import com.google.firebase.ml.vision.FirebaseVision
+import com.google.firebase.ml.vision.automl.FirebaseAutoMLLocalModel
 import com.google.firebase.ml.vision.automl.FirebaseAutoMLRemoteModel
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler
@@ -26,18 +27,18 @@ class MainActivity : AppCompatActivity(), ImageDetectedListener {
 
         initializeModel()
 
-        FirebaseModelManager.getInstance().isModelDownloaded(remoteModel)
-            .addOnSuccessListener {
-                Log.d(TAG, "Model successfully downloaded");
-                val optionsBuilder =
-                    FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder(remoteModel)
-
-                // Evaluate your model in the Firebase console to determine an appropriate threshold.
-                val options = optionsBuilder.setConfidenceThreshold(0.75f).build()
-                labeler = FirebaseVision.getInstance().getOnDeviceAutoMLImageLabeler(options)
-
-                tryToStartCamera()
-            }
+//        FirebaseModelManager.getInstance().isModelDownloaded(remoteModel)
+//            .addOnSuccessListener {
+//                Log.d(TAG, "Model successfully downloaded");
+//                val optionsBuilder =
+//                    FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder(remoteModel)
+//
+//                // Evaluate your model in the Firebase console to determine an appropriate threshold.
+//                val options = optionsBuilder.setConfidenceThreshold(0.85f).build()
+//                labeler = FirebaseVision.getInstance().getOnDeviceAutoMLImageLabeler(options)
+//
+//                tryToStartCamera()
+//            }
     }
 
     private fun hasCameraPermissions(): Boolean {
@@ -63,15 +64,26 @@ class MainActivity : AppCompatActivity(), ImageDetectedListener {
     }
 
     fun initializeModel() {
-        remoteModel = FirebaseAutoMLRemoteModel.Builder(REMOTE_HANDS_DETECTION_MODEL)
+//        remoteModel = FirebaseAutoMLRemoteModel.Builder(REMOTE_HANDS_DETECTION_MODEL)
+//            .build()
+        val localModel = FirebaseAutoMLLocalModel.Builder()
+            .setAssetFilePath("manifest.json")
             .build()
-        val conditions = FirebaseModelDownloadConditions.Builder()
-            .requireWifi()
+//        val conditions = FirebaseModelDownloadConditions.Builder()
+//            .requireWifi()
+//            .build()
+        val options = FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder(localModel)
+            .setConfidenceThreshold(0.85f)
+            // Evaluate your model in the Firebase console
+            // to determine an appropriate value.
             .build()
-        FirebaseModelManager.getInstance().download(remoteModel, conditions)
-            .addOnCompleteListener {
-                // Success.
-            }
+        labeler = FirebaseVision.getInstance().getOnDeviceAutoMLImageLabeler(options)
+//        FirebaseModelManager.getInstance().download(remoteModel, conditions)
+//            .addOnCompleteListener {
+//                // Success.
+//            }
+
+        tryToStartCamera()
     }
 
     fun tryToStartCamera() {
@@ -89,15 +101,15 @@ class MainActivity : AppCompatActivity(), ImageDetectedListener {
             .addOnSuccessListener { labels ->
                 // Task completed successfully
                 // ...
-                Log.d("test", "image processed")
+                Log.d("test2", "image processed")
                 for (label in labels) {
                     when (label.text) {
-                        "other" -> Log.d(
-                            TAG, "label.confidence " + label.confidence +
+                        "other_1" -> Log.d(
+                            "test1", "label.confidence " + label.confidence +
                                     " label.text = " + label.text
                         )
-                        "static_hand" -> Log.e(
-                            TAG, "label.confidence " + label.confidence +
+                        "mixed_hands" -> Log.e(
+                            "test1", "label.confidence " + label.confidence +
                                     " label.text = " + label.text
                         )
                     }
@@ -106,7 +118,7 @@ class MainActivity : AppCompatActivity(), ImageDetectedListener {
             .addOnFailureListener { e ->
                 // Task failed with an exception
                 // ...
-                Log.e(TAG, "error happened: ", e);
+               // Log.e(TAG, "error happened: ", e);
             }
     }
 }
