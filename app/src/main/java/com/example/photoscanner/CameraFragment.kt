@@ -53,7 +53,7 @@ class CameraFragment(var imageDetectedListener: ImageDetectedListener) : Fragmen
 
         // Create configuration object for the viewfinder use case
         val previewConfig = PreviewConfig.Builder().apply {
-            setTargetResolution(Size(cameraView.width, cameraView.height))
+          //  setTargetResolution(Size(cameraView.width, cameraView.height))
         }.build()
 
 
@@ -79,6 +79,7 @@ class CameraFragment(var imageDetectedListener: ImageDetectedListener) : Fragmen
                 ImageAnalysis.ImageReaderMode.ACQUIRE_LATEST_IMAGE)
             val analyzerThread = HandlerThread(
                 "LuminosityAnalysis").apply { start() }
+            setTargetResolution(Size(1280, 720))
         }.build()
 
         // Build the image analysis use case and instantiate our analyzer

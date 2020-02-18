@@ -6,26 +6,33 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions
 import com.google.firebase.ml.common.modeldownload.FirebaseModelManager
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.automl.FirebaseAutoMLLocalModel
 import com.google.firebase.ml.vision.automl.FirebaseAutoMLRemoteModel
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
+import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler
 import com.google.firebase.ml.vision.label.FirebaseVisionOnDeviceAutoMLImageLabelerOptions
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity(), ImageDetectedListener {
-
+    var i = 0
     val TAG = this.javaClass.simpleName
     lateinit var remoteModel: FirebaseAutoMLRemoteModel
     lateinit var labeler: FirebaseVisionImageLabeler
+
+    var globalImageTask: Task<List<FirebaseVisionImageLabel>>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initializeModel()
+
 
 //        FirebaseModelManager.getInstance().isModelDownloaded(remoteModel)
 //            .addOnSuccessListener {
@@ -97,28 +104,45 @@ class MainActivity : AppCompatActivity(), ImageDetectedListener {
     }
 
     override fun processImage(image: FirebaseVisionImage) {
-        labeler.processImage(image)
-            .addOnSuccessListener { labels ->
-                // Task completed successfully
-                // ...
-                Log.d("test2", "image processed")
-                for (label in labels) {
-                    when (label.text) {
-                        "other_1" -> Log.d(
-                            "test1", "label.confidence " + label.confidence +
-                                    " label.text = " + label.text
-                        )
-                        "mixed_hands" -> Log.e(
-                            "test1", "label.confidence " + label.confidence +
-                                    " label.text = " + label.text
-                        )
-                    }
+
+        var sdf = SimpleDateFormat("mm:ss")
+        var s = i;
+        Log.d("timeTest", "attempt" + s + "| time sent   : " + sdf.format(Date()));
+        globalImageTask?.let {
+            if (!it.isComplete) {
+                Log.d("taskCanceled", "true");
+                return;
+            }
+        }
+        Log.d("taskCanceled", "false");
+        var processImageTask = labeler.processImage(image)
+        globalImageTask = processImageTask
+        var imageProcessSuccessListener: (List<FirebaseVisionImageLabel>) -> Unit = { labels ->
+            Log.d("timeTest", "attempt" + s + "| time received: " + sdf.format(Date()));
+            Log.d("timeTest", "labels.size() " + labels.size)
+            for (label in labels) {
+                when (label.text) {
+                    "other_1" -> Log.d(
+                        "test1", "label.confidence " + label.confidence +
+                                " label.text = " + label.text
+                    )
+                    "mixed_hands" -> Log.e(
+                        "test1", "label.confidence " + label.confidence +
+                                " label.text = " + label.text
+                    )
                 }
             }
-            .addOnFailureListener { e ->
-                // Task failed with an exception
-                // ...
-               // Log.e(TAG, "error happened: ", e);
-            }
+        }
+        globalImageTask?.let {
+            it.addOnSuccessListener(imageProcessSuccessListener)
+                .addOnFailureListener { e ->
+                    // Log.e(TAG, "error happened: ", e);
+                }
+        }
+
+        i++
+
+
     }
+
 }
